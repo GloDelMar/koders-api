@@ -1,10 +1,14 @@
 const express = require("express")
 const kodersUsecase = require("../usecases/koders.usecase")
+const auth = require("../middlewares/auth.middleware")
 
 const router = express.Router()
 
+// para proteger todo el router 
+// router.use(auth)
+
 //GET /koders
-router.get("/", async (request, response)=>{
+router.get("/", auth, async (request, response)=>{
     try{
     const koders = await kodersUsecase.getAll()
     
@@ -41,7 +45,7 @@ const koderCreated= await kodersUsecase.create(request.body)
 
 // GET /koders/:id
 
-router.get("/:id", async(request, response)=>{
+router.get("/:id", auth, async(request, response)=>{
     try{
      //deconstruido =  const {id} = request.params 
      const id = request.params.id
@@ -62,7 +66,7 @@ router.get("/:id", async(request, response)=>{
 })
 
 //DELETE /koders/:id
-router.delete("/:id", async(request, response)=>{
+router.delete("/:id", auth, async(request, response)=>{
     try{
         const {id} = request.params
         const koderDelete = await kodersUsecase.deleteById(id)
@@ -82,7 +86,7 @@ router.delete("/:id", async(request, response)=>{
 
 //PATCH /koders/:id
 
-router.patch("/:id", async(request, response)=>{
+router.patch("/:id", auth, async(request, response)=>{
     try{
         const {id} = request.params
         const koderUpdated = await kodersUsecase.updateById(id, request.body)
