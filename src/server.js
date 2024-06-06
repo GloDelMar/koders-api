@@ -1,4 +1,4 @@
-const cors= requre("cors")
+const cors= require("cors")
 const express = require("express")
 
 const kodersRouter = require("./routes/koders.router")
