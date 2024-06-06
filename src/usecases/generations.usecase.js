@@ -1,32 +1,36 @@
-const Generations = require('../models/generations.model');
+const createError = require("http-errors")
+const Generation = require('../models/generations.model');
 
-async function createGeneretion (generationData) {
-    const newGeneration = await Generations.create(generationData);
-    return newGeneration;
+async function createGeneration (generationData) {
+    const existingGeneration = await Generation.findOne({
+        number: generationData.number,
+        program: generationData.program
+    })
+    if (existingGeneration){
+        throw createError(409, "Generation already exists")
+    }
+
+    return Generation.create(generationData)
 };
 
-async function getAllGenerations () {
-    const allGenerations = await Generations.find();
-    return allGenerations;
+function getAllGenerations () {
+    return Generation.find()
 };
 
-async function getGenerationById (id) {
-    const generationById = await Generations.findById(id);
-    return generationById;
+function getGenerationById (id) {
+    return Generation.findById(id)
 };
 
 async function deleteGenerationById (id) {
-    const generationDeleted = await Generations.findByIdAndDelete(id);
-    return generationDeleted;
+    return Generation.findByIdAndDelete(id)
 };
 
-async function updateGenerationById (id, newData) {
-    const generationUpdated = await Generations.findByIdAndUpdate(id, newData, {new: true});
-    return generationUpdated;
+function updateGenerationById (id, generationData) {
+    return Generation.findByIdAndUpdate(id, generationData, {new: true})
 };
 
 module.exports = {
-    createGeneretion,
+    createGeneration,
     getAllGenerations,
     getGenerationById,
     deleteGenerationById,

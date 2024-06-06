@@ -10,6 +10,7 @@ router.get('/', async (request, response) => {
 
         response.json({
             success: true,
+            message: "All generations",
             data: {generations}
         });
     } catch (error) {
@@ -28,6 +29,7 @@ router.get('/:id', async (request, response) => {
 
         response.json({
             success: true,
+            message: "Generation found",
             data: {generation}
         });
     } catch (error) {
@@ -41,10 +43,12 @@ router.get('/:id', async (request, response) => {
 
 router.post('/', async (request, response) => {
     try {
-        const generationCreated = await genUsecase.createGeneretion(request.body);
+        const generation = request.body
+        const generationCreated = await genUsecase.createGeneration(generation);
 
         response.json({
             success: true,
+            message: "Generation created",
             data: {generation: generationCreated}
         });
     } catch (error) {
@@ -63,6 +67,7 @@ router.delete('/:id', async (request, response) => {
 
         response.json({
             success: true,
+            message: "Generation Deleted",
             data: {generation: generationDeleted}
         });
     } catch (error) {
@@ -77,10 +82,12 @@ router.delete('/:id', async (request, response) => {
 router.patch('/:id', async (request, response) => {
     try {
         const {id} = request.params
-        const generationUpdated = await genUsecase.updateGenerationById(id, request.body);
+        const generation = request.body
+        const generationUpdated = await genUsecase.updateGenerationById(id, generation);
 
         response.json({
             success: true,
+            message: "Generation updated",
             data: {generation: generationUpdated}
         });
     } catch (error) {
